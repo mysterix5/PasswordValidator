@@ -2,18 +2,21 @@ package io.github.mysterix5;
 
 public class PasswordValidator {
 
-    int min_length = 8;
-    int max_length = 32;
+    private int minLength = 8;
+    private int maxLength = 32;
+
+    private String specialCharacters = "!@#&()–_\\[{}\\]\\.:;',?/*~$^+=<>";
 
     /** verify one single password
      *
      * @return boolean (acceptable or not)
      */
-    public boolean verify_password(String password){
+    public boolean verifyPassword(String password){
         System.out.println("verifying password: " + password);
-        if(!check_length(password)) return false;
-        if(!check_contains_numbers(password)) return false;
-        if(!check_contains_upper_and_lower_case(password)) return false;
+        if(!checkAllCharactersAllowed(password)) return false;
+        if(!checkLength(password)) return false;
+        if(!checkContainsNumbers(password)) return false;
+        if(!checkContainsUpperAndLowerCase(password)) return false;
 
         System.out.println("password passed all checks!");
         return true;
@@ -23,26 +26,26 @@ public class PasswordValidator {
      *
      * @return boolean array (acceptable for each password)
      */
-    public boolean[] verify_password_arr(String[] password_arr){
+    public boolean[] verifyPasswordArr(String[] passwordArr){
 
-        boolean[] verify_list = new boolean[password_arr.length];
+        boolean[] verifyList = new boolean[passwordArr.length];
 
-        for (int i = 0; i< password_arr.length; i++){
-            verify_list[i] = verify_password(password_arr[i]);
+        for (int i = 0; i< passwordArr.length; i++){
+            verifyList[i] = verifyPassword(passwordArr[i]);
         }
-        return verify_list;
+        return verifyList;
     }
 
     /** check password length by instance variable min and max values
      *
      *
      */
-    public boolean check_length(String password){
-        if (password.length()<min_length){
+    private boolean checkLength(String password){
+        if (password.length()< minLength){
             System.out.println("password is not long enough");
             return false;
         }
-        if (password.length()>max_length){
+        if (password.length()> maxLength){
             System.out.println("password is too long");
             return false;
         }
@@ -52,11 +55,9 @@ public class PasswordValidator {
 
     /** checks if password contains number(s)
      */
-    public boolean check_contains_numbers(String password){
+    private boolean checkContainsNumbers(String password){
 
-        var char_arr = password.toCharArray();
-        int[] number_arr = {0,1,2,3,4,5,6,7,8,9};
-        for(char c: char_arr){
+        for(char c: password.toCharArray()){
             if(Character.isDigit(c)) return true;
         }
         System.out.println("password has no digits");
@@ -66,18 +67,27 @@ public class PasswordValidator {
 
     /** checks if password contains uppercase AND lowercase
      */
-    public boolean check_contains_upper_and_lower_case(String password){
-        boolean contains_upper = false;
-        boolean contains_lower = false;
+    private boolean checkContainsUpperAndLowerCase(String password){
+        boolean containsUpper = false;
+        boolean containsLower = false;
 
         for(char c: password.toCharArray()){
-            if(Character.isLowerCase(c)) contains_lower = true;
-            if(Character.isUpperCase(c)) contains_upper = true;
-            if(contains_lower&&contains_upper)return true;
+            if(Character.isLowerCase(c)) containsLower = true;
+            if(Character.isUpperCase(c)) containsUpper = true;
+            if(containsLower&&containsUpper)return true;
         }
 
-        System.out.println("contains upper: " + contains_upper + ", lower: " + contains_lower);
+        System.out.println("contains upper: " + containsUpper + ", lower: " + containsLower);
 
+
+        return false;
+    }
+
+    private boolean checkAllCharactersAllowed(String password){
+
+        if (password.matches(String.format("[a-zA-Z0-9%s]+", specialCharacters))) return true;
+
+        System.out.println("there is a forbidden character in your password");
 
         return false;
     }
