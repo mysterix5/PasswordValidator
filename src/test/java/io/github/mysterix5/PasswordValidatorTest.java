@@ -26,7 +26,7 @@ class PasswordValidatorTest {
         }
     }
 
-    int [] verifyPasswordPassIndizes = {9,10,14,16};
+    int [] verifyPasswordPassIndizes = {14,16};
     @Test
     void verifyPasswordPass() {
         var passwordInd = getPassOrFailIndexList(true, verifyPasswordPassIndizes);

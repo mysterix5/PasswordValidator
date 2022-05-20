@@ -17,6 +17,7 @@ public class PasswordValidator {
         if(!checkLength(password)) return false;
         if(!checkContainsNumbers(password)) return false;
         if(!checkContainsUpperAndLowerCase(password)) return false;
+        if(!checkSpecialCharacter(password)) return false;
 
         System.out.println("password passed all checks!");
         return true;
@@ -89,6 +90,15 @@ public class PasswordValidator {
 
         System.out.println("there is a forbidden character in your password");
 
+        return false;
+    }
+
+    private boolean checkSpecialCharacter(String password){
+        for(char c: password.toCharArray()){
+            if(specialCharacters.indexOf(c)!=-1) return true;
+        }
+
+        System.out.println("your password does not contain any special characters");
         return false;
     }
 }
