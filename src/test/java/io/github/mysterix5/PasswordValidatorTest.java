@@ -12,132 +12,134 @@ import static org.junit.jupiter.api.Assertions.*;
  * There is a password list as class variable with interesting cases. Every method in PasswordValidator is testet for every case.
  */
 class PasswordValidatorTest {
-    static String[] all_test_passwords_arr = {"", "asdf", "asdfasdf", "asdfasdfasdfasdfasdfasdfasdfasdf3", "asdfasd1", "asdfasdfasdfasdfasdfasdfasdfasd3",//next index 6
-            "Asdf", "asdFasdf", "asdfasdfasdfasdfAsdfasdfasdfasdf3", "asdFasd1", "asdfasdfasdfasDfasdfasdfasdfasd3", "AAAAAAAAAAAAAAAAA5", "aaaaaaaaaaaaaaaaaa5"};
+    static final String[] ALL_TEST_PASSWORDS_ARR = {"", "asdf", "asdfasdf", "asdfasdfasdfasdfasdfasdfasdfasdf3", "asdfasd1", "asdfasdfasdfasdfasdfasdfasdfasd3",//next index 6
+            "Asdf", "asdFasdf", "asdfasdfasdfasdfAsdfasdfasdfasdf3", "asdFasd1", "asdfasdfasdfasDfasdfasdfasdfasd3", "AAAAAAAAAAAAAAAAA5", "aaaaaaaaaaaaaaaaaa5", // next index 13
+            "äsdFasd1", "a?=)(sdFasd1", "!@#&()–_[{}]:;',?/*~$^+=<>.", "!@#&()–_[{}]:;',?/*~$^+=<>.Aa1"};
 
 
     @Test // not very useful test, because it copies the logic of verify_password_arr() exactly.
-    void verify_password_arr() {
+    void verifyPasswordArr() {
         var pv = new PasswordValidator();
-        boolean[] ver_arr = pv.verify_password_arr(all_test_passwords_arr);
-        for(int i = 0; i< all_test_passwords_arr.length; i++){
-            assertEquals(pv.verify_password(all_test_passwords_arr[i]), ver_arr[i]);
+        boolean[] verArr = pv.verifyPasswordArr(ALL_TEST_PASSWORDS_ARR);
+        for(int i = 0; i< ALL_TEST_PASSWORDS_ARR.length; i++){
+            assertEquals(pv.verifyPassword(ALL_TEST_PASSWORDS_ARR[i]), verArr[i]);
         }
     }
 
-    int [] verify_password_pass_indizes = {9,10};
+    int [] verifyPasswordPassIndizes = {9,10,14,16};
     @Test
-    void verify_password_pass() {
-        var password_ind = get_pass_or_fail_index_list(true, verify_password_pass_indizes);
+    void verifyPasswordPass() {
+        var passwordInd = getPassOrFailIndexList(true, verifyPasswordPassIndizes);
         var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.verify_password(all_test_passwords_arr[i]);
+        for(int i: passwordInd){
+            System.out.println("Password: " + ALL_TEST_PASSWORDS_ARR[i]);
+            boolean actual = pv.verifyPassword(ALL_TEST_PASSWORDS_ARR[i]);
             assertTrue(actual);
         }
     }
 
     @Test
-    void verify_password_fail(){
-        var password_ind = get_pass_or_fail_index_list(false, verify_password_pass_indizes);
+    void verifyPasswordFail(){
+        var passwordInd = getPassOrFailIndexList(false, verifyPasswordPassIndizes);
         var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.verify_password(all_test_passwords_arr[i]);
-            assertFalse(actual);
-        }
-    }
-
-
-    int [] check_length_pass_indizes = {2,4,5,7,9,10,11,12};
-    @Test
-    void check_length_pass() {
-        var password_ind = get_pass_or_fail_index_list(true, check_length_pass_indizes);
-        var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_length(all_test_passwords_arr[i]);
-            assertTrue(actual);
-        }
-    }
-
-    @Test
-    void check_length_fail() {
-        var password_ind = get_pass_or_fail_index_list(false, check_length_pass_indizes);
-        var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_length(all_test_passwords_arr[i]);
-            assertFalse(actual);
-        }
-    }
-
-
-    int [] check_contains_numbers_pass_indizes = {3,4,5,8,9,10,11,12};
-    @Test
-    void check_contains_numbers_pass() {
-        var password_ind = get_pass_or_fail_index_list(true, check_contains_numbers_pass_indizes);
-        var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_contains_numbers(all_test_passwords_arr[i]);
-            assertTrue(actual);
-        }
-    }
-    @Test
-    void check_contains_numbers_fail() {
-        var password_ind = get_pass_or_fail_index_list(false, check_contains_numbers_pass_indizes);
-        var pv = new PasswordValidator();
-        for(int i: password_ind){
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_contains_numbers(all_test_passwords_arr[i]);
-            assertFalse(actual);
-        }
-    }
-
-
-    int [] check_contains_upper_and_lower_case_pass = {6,7,8,9,10};
-    @Test
-    void check_contains_upper_and_lower_case_pass() {
-        var password_ind = get_pass_or_fail_index_list(true, check_contains_upper_and_lower_case_pass);
-        var pv = new PasswordValidator();
-        for (int i : password_ind) {
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_contains_upper_and_lower_case(all_test_passwords_arr[i]);
-            assertTrue(actual);
-        }
-    }
-    @Test
-    void check_contains_upper_and_lower_case_fail() {
-        var password_ind = get_pass_or_fail_index_list(false, check_contains_upper_and_lower_case_pass);
-        var pv = new PasswordValidator();
-        for (int i : password_ind) {
-            System.out.println("Password: " + all_test_passwords_arr[i]);
-            boolean actual = pv.check_contains_upper_and_lower_case(all_test_passwords_arr[i]);
+        for(int i: passwordInd){
+            System.out.println("Password: " + ALL_TEST_PASSWORDS_ARR[i]);
+            boolean actual = pv.verifyPassword(ALL_TEST_PASSWORDS_ARR[i]);
             assertFalse(actual);
         }
     }
 
     /** create a sub list from an index list referring to class variable all_test_passwords_arr
      *
-     * @param get_pass (insert true to get pass list, false to get fail list)
-     * @param index_arr_in (list of indizes where the belonging passwords should be passing)
+     * @param getPass (insert true to get pass list, false to get fail list)
+     * @param indexArrIn (list of indizes where the belonging passwords should be passing)
      */
-    ArrayList<Integer> get_pass_or_fail_index_list(boolean get_pass, int[] index_arr_in){
-        var pass_list = IntStream.of(index_arr_in).boxed().collect(Collectors.toCollection(ArrayList::new));
-        var fail_list =get_other_indizes(pass_list);
+    ArrayList<Integer> getPassOrFailIndexList(boolean getPass, int[] indexArrIn){
+        var passList = IntStream.of(indexArrIn).boxed().collect(Collectors.toCollection(ArrayList::new));
+        var failList = getOtherIndizes(passList);
 
-        if(get_pass) return pass_list;
-        else return fail_list;
+        if(getPass) return passList;
+        else return failList;
     }
-    ArrayList<Integer> get_other_indizes(ArrayList<Integer> int_arr){
-        ArrayList<Integer> all_indizes = new ArrayList<>(all_test_passwords_arr.length);
-        for(int i = 0; i < all_test_passwords_arr.length; i++){
-            all_indizes.add(i);
+    ArrayList<Integer> getOtherIndizes(ArrayList<Integer> intArr){
+        ArrayList<Integer> allIndizes = new ArrayList<>(ALL_TEST_PASSWORDS_ARR.length);
+        for(int i = 0; i < ALL_TEST_PASSWORDS_ARR.length; i++){
+            allIndizes.add(i);
         }
 
-        all_indizes.removeAll(int_arr);
-        return all_indizes;
+        allIndizes.removeAll(intArr);
+        return allIndizes;
     }
+
+
+//    int [] check_length_pass_indizes = {2,4,5,7,9,10,11,12};
+//    @Test
+//    void check_length_pass() {
+//        var password_ind = get_pass_or_fail_index_list(true, check_length_pass_indizes);
+//        var pv = new PasswordValidator();
+//        for(int i: password_ind){
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkLength(all_test_passwords_arr[i]);
+//            assertTrue(actual);
+//        }
+//    }
+//
+//    @Test
+//    void check_length_fail() {
+//        var password_ind = get_pass_or_fail_index_list(false, check_length_pass_indizes);
+//        var pv = new PasswordValidator();
+//        for(int i: password_ind){
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkLength(all_test_passwords_arr[i]);
+//            assertFalse(actual);
+//        }
+//    }
+//
+//
+//    int [] check_contains_numbers_pass_indizes = {3,4,5,8,9,10,11,12};
+//    @Test
+//    void check_contains_numbers_pass() {
+//        var password_ind = get_pass_or_fail_index_list(true, check_contains_numbers_pass_indizes);
+//        var pv = new PasswordValidator();
+//        for(int i: password_ind){
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkContainsNumbers(all_test_passwords_arr[i]);
+//            assertTrue(actual);
+//        }
+//    }
+//    @Test
+//    void check_contains_numbers_fail() {
+//        var password_ind = get_pass_or_fail_index_list(false, check_contains_numbers_pass_indizes);
+//        var pv = new PasswordValidator();
+//        for(int i: password_ind){
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkContainsNumbers(all_test_passwords_arr[i]);
+//            assertFalse(actual);
+//        }
+//    }
+//
+//
+//    int [] check_contains_upper_and_lower_case_pass = {6,7,8,9,10};
+//    @Test
+//    void check_contains_upper_and_lower_case_pass() {
+//        var password_ind = get_pass_or_fail_index_list(true, check_contains_upper_and_lower_case_pass);
+//        var pv = new PasswordValidator();
+//        for (int i : password_ind) {
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkContainsUpperAndLowerCase(all_test_passwords_arr[i]);
+//            assertTrue(actual);
+//        }
+//    }
+//    @Test
+//    void check_contains_upper_and_lower_case_fail() {
+//        var password_ind = get_pass_or_fail_index_list(false, check_contains_upper_and_lower_case_pass);
+//        var pv = new PasswordValidator();
+//        for (int i : password_ind) {
+//            System.out.println("Password: " + all_test_passwords_arr[i]);
+//            boolean actual = pv.checkContainsUpperAndLowerCase(all_test_passwords_arr[i]);
+//            assertFalse(actual);
+//        }
+//    }
+
 
 }
