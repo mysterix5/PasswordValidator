@@ -4,6 +4,11 @@ public class PasswordValidator {
 
     int min_length = 8;
     int max_length = 32;
+
+    /** verify one single password
+     *
+     * @return boolean (acceptable or not)
+     */
     public boolean verify_password(String password){
         System.out.println("verifying password: " + password);
         if(!check_length(password)) return false;
@@ -14,6 +19,10 @@ public class PasswordValidator {
         return true;
     }
 
+    /** verify array of passwords
+     *
+     * @return boolean array (acceptable for each password)
+     */
     public boolean[] verify_password_arr(String[] password_arr){
 
         boolean[] verify_list = new boolean[password_arr.length];
@@ -24,6 +33,10 @@ public class PasswordValidator {
         return verify_list;
     }
 
+    /** check password length by instance variable min and max values
+     *
+     *
+     */
     public boolean check_length(String password){
         if (password.length()<min_length){
             System.out.println("password is not long enough");
@@ -37,6 +50,8 @@ public class PasswordValidator {
         return true;
     }
 
+    /** checks if password contains number(s)
+     */
     public boolean check_contains_numbers(String password){
 
         var char_arr = password.toCharArray();
@@ -49,6 +64,8 @@ public class PasswordValidator {
         return false;
     }
 
+    /** checks if password contains uppercase AND lowercase
+     */
     public boolean check_contains_upper_and_lower_case(String password){
         boolean contains_upper = false;
         boolean contains_lower = false;

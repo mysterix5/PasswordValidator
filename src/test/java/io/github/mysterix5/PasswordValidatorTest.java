@@ -3,19 +3,20 @@ package io.github.mysterix5;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * There is a password list as class variable with interesting cases. Every method in PasswordValidator is testet for every case.
+ */
 class PasswordValidatorTest {
-    String[] all_test_passwords_arr = {"", "asdf", "asdfasdf", "asdfasdfasdfasdfasdfasdfasdfasdf3", "asdfasd1", "asdfasdfasdfasdfasdfasdfasdfasd3",//next index 6
+    static String[] all_test_passwords_arr = {"", "asdf", "asdfasdf", "asdfasdfasdfasdfasdfasdfasdfasdf3", "asdfasd1", "asdfasdfasdfasdfasdfasdfasdfasd3",//next index 6
             "Asdf", "asdFasdf", "asdfasdfasdfasdfAsdfasdfasdfasdf3", "asdFasd1", "asdfasdfasdfasDfasdfasdfasdfasd3", "AAAAAAAAAAAAAAAAA5", "aaaaaaaaaaaaaaaaaa5"};
 
 
-    @Test // Ein bisschen sinnlos, weil die logik aus verify_password_arr() hier einfach nochmal wiederholt wird
+    @Test // not very useful test, because it copies the logic of verify_password_arr() exactly.
     void verify_password_arr() {
         var pv = new PasswordValidator();
         boolean[] ver_arr = pv.verify_password_arr(all_test_passwords_arr);
@@ -117,7 +118,11 @@ class PasswordValidatorTest {
         }
     }
 
-
+    /** create a sub list from an index list referring to class variable all_test_passwords_arr
+     *
+     * @param get_pass (insert true to get pass list, false to get fail list)
+     * @param index_arr_in (list of indizes where the belonging passwords should be passing)
+     */
     ArrayList<Integer> get_pass_or_fail_index_list(boolean get_pass, int[] index_arr_in){
         var pass_list = IntStream.of(index_arr_in).boxed().collect(Collectors.toCollection(ArrayList::new));
         var fail_list =get_other_indizes(pass_list);
